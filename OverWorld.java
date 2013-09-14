@@ -25,15 +25,16 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
     private Timer timer;
     private int offset = 0;
     
+    /*
     public static void main(String[] args)
     {
     	OverWorld overworld = new OverWorld();
     }
-    /*
+    */
     public void init()
     {
-        OverWorld overworld = new OverWorld();
-    }*/
+        //OverWorld overworld = new OverWorld();
+    }
     
     public OverWorld()
     {
