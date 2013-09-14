@@ -10,7 +10,7 @@ import javax.imageio.ImageIO;
 public class Character
 {
     boolean isInvisible = false;
-    int xcoord = 400;
+    int xcoord = 200;
     int ycoord = 0;
     int vx = 10;
     int vy = 10;

@@ -22,6 +22,7 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
     public static final int slow = 5;
     public static final int normal = 10;
     public static final int fast = 20;
+    private boolean done = false;
     
     private Timer timer;
     private int offset = 0;
@@ -82,10 +83,17 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
         checkIsDead();
         if(checkLeaf())
         {
+        	done = false;
             timer.stop();
             levelCounter++;
             offset = 0;
             overPaintWorlds("./resource/top" + levelCounter + ".png", "./resource/bottom" + levelCounter + ".png", "./resource/top" + levelCounter + "mask.png", "./resource/bottom" + levelCounter + "mask.png");
+            char1.xcoord = 200;
+            char2.xcoord = 200;
+            char1.ycoord = 0;
+            char2.ycoord = 0;
+            offset = 0;
+            currentChar = char1;
             int someNum = JOptionPane.showConfirmDialog(null, "Congratulations, you beat the level! Now to the next one :", "Congratulations!", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
             if(someNum > Integer.MIN_VALUE) {timer.start();}
         }
@@ -145,10 +153,10 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
         {
         	for(int j = currentChar.ycoord; j < currentChar.ycoord + currentChar.getCharImage().getHeight(); j++){
         		if(currentWorld.imageWorld_mask.getRGB(i,j) == Color.GREEN.getRGB())
-        			return true;
+        			done = true;
         	}
         }
-    	return false;
+    	return done;
     }
     
     private boolean checkTeleport()
@@ -251,7 +259,6 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
         public BufferedImage imageWorld, imageWorld_mask;
         private int xChar, yChar;
         private boolean shouldPaintChars = false;
-        //private ArrayList<Light> lights = new ArrayList<Light>();
         
         public WorldPainter ()
         {
