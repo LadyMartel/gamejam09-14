@@ -88,12 +88,12 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
             levelCounter++;
             offset = 0;
             overPaintWorlds("./resource/top" + levelCounter + ".png", "./resource/bottom" + levelCounter + ".png", "./resource/top" + levelCounter + "mask.png", "./resource/bottom" + levelCounter + "mask.png");
-            char1.xcoord = 200;
-            char2.xcoord = 200;
+            char1.xcoord = 50;
+            char2.xcoord = 50;
             char1.ycoord = 0;
             char2.ycoord = 0;
             offset = 0;
-            currentChar = char1;
+            keyPressed(new KeyEvent(overWorldFrame, 0, 0, 0, 0, ' '));
             int someNum = JOptionPane.showConfirmDialog(null, "Congratulations, you beat the level! Now to the next one :", "Congratulations!", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
             if(someNum > Integer.MIN_VALUE) {timer.start();}
         }
