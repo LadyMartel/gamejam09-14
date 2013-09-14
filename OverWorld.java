@@ -1,10 +1,8 @@
 import javax.swing.*;
 
 import java.awt.event.*;
-import java.awt.geom.Rectangle2D;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import javax.swing.Timer;
 
 import java.io.*;
@@ -42,7 +40,7 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
         char2.setInvisible(true);
         world1 = new WorldPainter();
         world2 = new WorldPainter();
-        world1.setBackground(Color.BLACK);
+        world1.setBackground(Color.WHITE);
         world2.setBackground(Color.BLACK);
         
         overPaintWorlds("./resource/top1.png", "./resource/bottom1.png", "./resource/top1mask.png", "./resource/bottom1mask.png");
@@ -68,7 +66,6 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
         world1.addKeyListener(this);
         world2.addKeyListener(this);
         
-        //lights1.add(new Light(300,0));
         timer = new Timer(30, this);
         timer.start();
        
@@ -90,7 +87,10 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
             overPaintWorlds("./resource/top" + levelCounter + ".png", "./resource/bottom" + levelCounter + ".png", "./resource/top" + levelCounter + "mask.png", "./resource/bottom" + levelCounter + "mask.png");
             char1.setCoord(100, 0);
             char2.setCoord(100, 0);
-            keyPressed(new KeyEvent(overWorldFrame,0,0,0,0,' '));
+            char1.setInvisible(false);
+            char2.setInvisible(true);
+            currentChar = char1;
+            currentWorld = world1;
             int someNum = JOptionPane.showConfirmDialog(null, "Congratulations, you beat the level! Now to the next one :", "Congratulations!", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
             if(someNum > Integer.MIN_VALUE) {timer.start();}
         }
@@ -99,6 +99,20 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
             world1.setBackground(Color.WHITE);
             world2.setBackground(Color.WHITE);
             timer.stop();
+            int n = JOptionPane.showConfirmDialog(overWorldFrame, "You Died! Do you want to start over?", "Dead Bug", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+            if (n == JOptionPane.YES_OPTION)
+            {
+            	isAlive = true;
+            	offset = 0;
+                overPaintWorlds("./resource/top" + levelCounter + ".png", "./resource/bottom" + levelCounter + ".png", "./resource/top" + levelCounter + "mask.png", "./resource/bottom" + levelCounter + "mask.png");
+                char1.setCoord(100, 0);
+                char2.setCoord(100, 0);
+                char1.setInvisible(false);
+                char2.setInvisible(true);
+                currentChar = char1;
+                currentWorld = world1;
+                timer.start();
+            }
         }
     }
     
@@ -213,7 +227,7 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
         overWorldFrame.requestFocus();
         if(currentChar == char1)
         {
-            offset++;
+        	offset++;
             world1.paintChar(char1.getCharImage(), char1.getXcoord(), char1.getYcoord());
             world1.setShouldPaintChars(true);
             world2.setShouldPaintChars(false);
@@ -222,7 +236,7 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
         }
         else 
         {
-            offset++;
+        	offset++;
             world2.paintChar(char2.getCharImage(), char2.getXcoord(), char2.getYcoord());
             world2.setShouldPaintChars(true);
             world1.setShouldPaintChars(false);
