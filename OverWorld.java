@@ -86,13 +86,8 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
     public void actionPerformed(ActionEvent e)
     {
         overPaintChars();
-        checkIsDead(10, 0);
+        checkIsDead();
         //paintLight();
-        if(currentChar.xcoord - offset < 0
-        || currentWorld.imageWorld_mask.getRGB(currentChar.xcoord - offset + currentChar.getCharImage().getWidth(), currentChar.ycoord) == Color.YELLOW.getRGB())
-        {
-            isAlive = false;
-        }
         if(!isAlive)
         {
             world1.setBackground(Color.WHITE);
@@ -101,7 +96,7 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
         }
     }
     
-    private boolean checkIsDead(int xVelocity, int yVelocity)
+    private boolean checkIsDead()
     {
         for(int i = currentChar.xcoord; i < currentChar.xcoord + currentChar.getCharImage().getWidth(); i++)
         {
