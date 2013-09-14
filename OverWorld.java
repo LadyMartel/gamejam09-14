@@ -42,7 +42,7 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
         world1.setBackground(Color.BLACK);
         world2.setBackground(Color.BLACK);
         
-        overPaintWorlds("./resource/top.png", "./resource/bottom.png", "./resource/top_mask.png", "./resource/bottom_mask.png");
+        overPaintWorlds("./resource/top1.png", "./resource/bottom1.png", "./resource/top1mask.png", "./resource/bottom1mask.png");
         
         overWorldPanel.setLayout(new BoxLayout(overWorldPanel, BoxLayout.Y_AXIS));
         overWorldFrame.setTitle("Over World");
@@ -109,6 +109,12 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
         }
         return isAlive;
     }
+    
+    private boolean checkIsWall()
+    {
+    	return true;
+    }
+    
     
     public void overPaintChars()
     {
@@ -216,7 +222,6 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
             {
                 if(char1.getXcoord() + 10 <= world1.getWidth() + offset - char1.getCharImage().getWidth())
                 {
-                    //checkIsDead(10, 0);
                     char1.moveRight();
                     char2.moveRight();
                 }
