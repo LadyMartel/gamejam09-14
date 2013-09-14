@@ -5,7 +5,6 @@ import java.awt.geom.Rectangle2D;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-
 import javax.swing.Timer;
 
 import java.io.*;
@@ -87,6 +86,7 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
     public void actionPerformed(ActionEvent e)
     {
         overPaintChars();
+        checkIsDead(10, 0);
         //paintLight();
         if(currentChar.xcoord - offset < 0
         || currentWorld.imageWorld_mask.getRGB(currentChar.xcoord - offset + currentChar.getCharImage().getWidth(), currentChar.ycoord) == Color.YELLOW.getRGB())
@@ -103,10 +103,16 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
     
     private boolean checkIsDead(int xVelocity, int yVelocity)
     {
-        if(currentWorld.imageWorld_mask.getRGB(currentChar.xcoord + currentChar.getCharImage().getWidth() + xVelocity, currentChar.ycoord + yVelocity) == Color.YELLOW.getRGB()
-            || currentWorld.imageWorld_mask.getRGB(currentChar.xcoord + currentChar.getCharImage().getWidth() + xVelocity, currentChar.ycoord + yVelocity + currentChar.getCharImage().getHeight()) == Color.YELLOW.getRGB())
+        if(currentWorld.imageWorld_mask.getRGB(currentChar.xcoord + currentChar.getCharImage().getWidth(), currentChar.ycoord) == Color.YELLOW.getRGB()
+            || currentWorld.imageWorld_mask.getRGB(currentChar.xcoord + currentChar.getCharImage().getWidth() + xVelocity, currentChar.ycoord + yVelocity + currentChar.getCharImage().getHeight()) == Color.YELLOW.getRGB()
+            || currentWorld.imageWorld_mask.getRGB(currentChar.xcoord, currentChar.ycoord + yVelocity + currentChar.getCharImage().getHeight()) == Color.YELLOW.getRGB()
+            || currentWorld.imageWorld_mask.getRGB(currentChar.xcoord - currentChar.getCharImage().getWidth(), currentChar.ycoord) == Color.YELLOW.getRGB())
+        for(int i = currentChar.xcoord; i < currentChar.xcoord + currentChar.getCharImage().getWidth(); i++)
         {
-            isAlive = false;
+        	for(int j = currentChar.ycoord; j < currentChar.ycoord + currentChar.getCharImage().getHeight(); j++){
+        		if(currentWorld.imageWorld_mask.getRGB(i,j) == Color.YELLOW.getRGB())
+        			isAlive = false;
+        	}
         }
         return isAlive;
     }
@@ -217,7 +223,7 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
             {
                 if(char1.getXcoord() + 10 <= world1.getWidth() + offset - char1.getCharImage().getWidth())
                 {
-                    checkIsDead(10, 0);
+                    //checkIsDead(10, 0);
                     char1.moveRight();
                     char2.moveRight();
                 }

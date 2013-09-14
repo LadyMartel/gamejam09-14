@@ -7,8 +7,9 @@ import javax.imageio.ImageIO;
 public class Character
 {
     boolean isInvisible = false;
-    int xcoord = 50;
+    int xcoord = 400;
     int ycoord = 0;
+    int v = 10;
     BufferedImage charImage;
 
     public Character(String imageString)
@@ -26,24 +27,24 @@ public class Character
     
     public void moveRight()
     {
-        xcoord+=10;
+        xcoord += v;
     }
 
     public void moveLeft()
     {
-        if(xcoord - 10 >= 0)
-            xcoord-=10;
+        if(xcoord - v >= 0)
+            xcoord -= v;
     }
     
     public void moveUp()
     {
-        if(ycoord - 10 >= 0)
-            ycoord-=10;
+        if(ycoord - v >= 0)
+            ycoord -= v;
     }
     
     public void moveDown()
     {
-        ycoord+=10;
+        ycoord += v;
     }
     
     public BufferedImage getCharImage()
@@ -69,5 +70,10 @@ public class Character
     public boolean getInvisible()
     {
         return isInvisible;
+    }
+    
+    public void setV(int nv)
+    {
+    	v = nv;
     }
 }
