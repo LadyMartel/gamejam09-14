@@ -7,10 +7,9 @@ import javax.imageio.ImageIO;
 public class Character
 {
     boolean isInvisible = false;
-    int xcoord = 0;
+    int xcoord = 50;
     int ycoord = 0;
     BufferedImage charImage;
-    boolean isAlive = true;
 
     public Character(String imageString)
     {
