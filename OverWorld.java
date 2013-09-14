@@ -88,8 +88,8 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
             levelCounter++;
             offset = 0;
             overPaintWorlds("./resource/top" + levelCounter + ".png", "./resource/bottom" + levelCounter + ".png", "./resource/top" + levelCounter + "mask.png", "./resource/bottom" + levelCounter + "mask.png");
-            char1.setCoord(200, 0);
-            char2.setCoord(200, 0);
+            char1.setCoord(100, 0);
+            char2.setCoord(100, 0);
             keyPressed(new KeyEvent(overWorldFrame,0,0,0,0,' '));
             int someNum = JOptionPane.showConfirmDialog(null, "Congratulations, you beat the level! Now to the next one :", "Congratulations!", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
             if(someNum > Integer.MIN_VALUE) {timer.start();}
@@ -287,6 +287,7 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
         if(isAlive)
         {
             char keyChar = e.getKeyChar();
+            int keyCode = e.getKeyCode();
             if(isSludge())
         	{
         		char1.setVX(slow);
@@ -306,7 +307,7 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
         		char2.setVX(normal);
         		char2.setVY(normal);
         	}
-            if(keyChar == 'd')
+            if(keyChar == 'd' || keyCode == KeyEvent.VK_RIGHT)
             {
             	if(!checkWall('r'))
                 if(char1.getXcoord() + char1.getVX() <= world1.getWidth() + offset - char1.getCharImage().getWidth())
@@ -315,14 +316,14 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
                     char2.moveRight();
                 }
             }
-            else if(keyChar == 'a')
+            else if(keyChar == 'a' || keyCode == KeyEvent.VK_LEFT)
             {
             	if(!checkWall('l')){
 	                char1.moveLeft();
 	                char2.moveLeft();
             	}
             }
-            else if(keyChar == 's')
+            else if(keyChar == 's' || keyCode == KeyEvent.VK_DOWN)
             {
             	if(!checkWall('d')){
 	                if(char1.getYcoord() + char1.getVY() <= world1.getHeight() - char1.getCharImage().getHeight())
@@ -332,7 +333,7 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
 	                }
             	}
             }
-            else if(keyChar == 'w')
+            else if(keyChar == 'w'|| keyCode == KeyEvent.VK_UP)
             {
             	if(!checkWall('u')){
 	                char1.moveUp();
