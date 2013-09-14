@@ -34,7 +34,7 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
         overWorldFrame = new JFrame();
         overWorldPanel = overWorldFrame.getContentPane();
         char1 = new Character("./resource/charimage.png");
-        char2 = new Character("./resource/charimage.png");
+        char2 = new Character("./resource/charimage_inverted.png");
         char1.setInvisible(false);
         char2.setInvisible(true);
         world1 = new WorldPainter();
