@@ -1,6 +1,5 @@
-import javax.swing.*;
+
 import javax.swing.JOptionPane;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import javax.imageio.ImageIO;
@@ -11,6 +10,7 @@ public class Character
     int xcoord = 0;
     int ycoord = 0;
     BufferedImage charImage;
+    boolean isAlive = true;
 
     public Character(String imageString)
     {

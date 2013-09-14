@@ -1,11 +1,11 @@
 import javax.swing.*;
-import javax.swing.BoxLayout;
+
 import java.awt.event.*;
-import java.awt.Graphics;
+import java.awt.geom.Rectangle2D;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
-import javax.imageio.ImageIO;
+import java.util.ArrayList;
+
 import javax.swing.Timer;
 
 
@@ -18,6 +18,8 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
     private Character char1;
     private Character char2;
     private Character currentChar;
+    private ArrayList<Light> lights1 = new ArrayList<Light>();
+    private ArrayList<Light> lights2 = new ArrayList<Light>();
     
     private Timer timer;
     private int currentX = 0;
@@ -31,14 +33,14 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
     {
         overWorldFrame = new JFrame();
         overWorldPanel = overWorldFrame.getContentPane();
-        char1 = new Character("charimage.png");
-        char2 = new Character("charimage.png");
+        char1 = new Character("/Users/JungHyun/Documents/workspace/game/src/charimage.png");
+        char2 = new Character("/Users/JungHyun/Documents/workspace/game/src/charimage.png");
         char1.setInvisible(false);
         char2.setInvisible(true);
         world1 = new WorldPainter();
         world2 = new WorldPainter();
-        world1.setBackground(Color.BLACK);
-        world2.setBackground(Color.BLACK);
+        world1.setBackground(Color.WHITE);
+        world2.setBackground(Color.WHITE);
         
         overWorldPanel.setLayout(new BoxLayout(overWorldPanel, BoxLayout.Y_AXIS));
         overWorldFrame.setTitle("Over World");
@@ -60,11 +62,22 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
         world2.addKeyListener(this);
         
         overPaintChars();
+        lights1.add(new Light(300,0));
+        paintLight();
         timer = new Timer(30, this);
         timer.start();
         
         overWorldFrame.requestFocus();
         currentChar = char1;
+        while(currentChar.isAlive)
+        {
+        	if(currentChar.xcoord - currentX < 0)
+        	{
+        		currentChar.isAlive = false;
+        	}
+        }
+        world1.setBackground(Color.BLACK);
+        world2.setBackground(Color.BLACK);
     }
     
     public void overPaintChars()
@@ -90,8 +103,19 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
         }
     }
     
+    public void paintLight()
+    {
+    	currentX++;
+    	world1.paintLight(lights1);
+    	world2.paintLight(lights2);
+    }
+    
     public void keyTyped(KeyEvent e)
     {
+   
+    }
+
+    public void keyPressed(KeyEvent e) {
         char keyChar = e.getKeyChar();
         if(keyChar == 'd')
         {
@@ -133,10 +157,8 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
                 char2.setInvisible(true);
                 currentChar = char1;
             }
-        }    
+        } 
     }
-
-    public void keyPressed(KeyEvent e) {}
     public void keyReleased(KeyEvent e) {}
     
     public void actionPerformed(ActionEvent e)
@@ -158,6 +180,7 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
         private BufferedImage imageChar;
         private int xChar, yChar;
         private boolean shouldPaintChars = false;
+        private ArrayList<Light> lights = new ArrayList<Light>();
         
         public WorldPainter ()
         {
@@ -175,12 +198,29 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
             this.xChar = xChar;
             this.yChar = yChar;
         }
+        
+        public void paintLight(ArrayList<Light> lights)
+        {
+            this.lights = lights;
+        }
 
         public void paintComponent(Graphics g)
         {
             super.paintComponent(g);
             if(shouldPaintChars) {g.drawImage(imageChar, xChar - currentX, yChar, this);}
-            g.translate(-currentX, 0);
+            Graphics2D g2 = (Graphics2D) g;
+            for (Light light:lights)
+            {
+            	int x = light.getX() - currentX;
+            	int y = light.getY();
+            	int[] xp = {x,x-60,x+60};
+            	int[] yp = {y,y+50,y+50};
+            	Polygon p = new Polygon(xp,yp,3);
+            	g2.draw(p);
+            	g2.draw(new Rectangle2D.Double(x-60,y+50,120,250));
+            }
+            //g.translate(-currentX, 0);
+            //g2.translate(-currentX, 0);
         }
     }
 }
