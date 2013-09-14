@@ -19,8 +19,9 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
     private Character char1, char2, currentChar;
     private boolean isAlive = true;
     private int levelCounter = 1;
-    //private ArrayList<Light> lights1 = new ArrayList<Light>();
-    //private ArrayList<Light> lights2 = new ArrayList<Light>();
+    public static final int slow = 5;
+    public static final int normal = 10;
+    public static final int fast = 20;
     
     private Timer timer;
     private int offset = 0;
@@ -111,6 +112,31 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
         }
         return isAlive;
     }
+    
+    private boolean isSludge()
+    {
+    	for(int i = currentChar.xcoord; i < currentChar.xcoord + currentChar.getCharImage().getWidth(); i++)
+        {
+        	for(int j = currentChar.ycoord; j < currentChar.ycoord + currentChar.getCharImage().getHeight(); j++){
+        		if(currentWorld.imageWorld_mask.getRGB(i,j) == Color.RED.getRGB())
+        			return true;
+        	}
+        }
+    	return false;
+    }
+    
+    private boolean isSpeed()
+    {
+    	for(int i = currentChar.xcoord; i < currentChar.xcoord + currentChar.getCharImage().getWidth(); i++)
+        {
+        	for(int j = currentChar.ycoord; j < currentChar.ycoord + currentChar.getCharImage().getHeight(); j++){
+        		if(currentWorld.imageWorld_mask.getRGB(i,j) == Color.BLUE.getRGB())
+        			return true;
+        	}
+        }
+    	return false;
+    }
+    
     
     
     private boolean checkLeaf()
@@ -257,6 +283,20 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
         if(isAlive)
         {
             char keyChar = e.getKeyChar();
+            if(isSludge())
+        	{
+        		currentChar.setVX(slow);
+        		currentChar.setVY(slow);
+        	}
+        	else if(isSpeed())
+        	{
+        		currentChar.setVX(fast);
+        	}
+        	else
+        	{
+        		currentChar.setVX(normal);
+        		currentChar.setVY(normal);
+        	}
             if(keyChar == 'd')
             {
             	if(!checkWall('r'))
