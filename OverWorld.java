@@ -270,20 +270,23 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
             }
             else if(keyChar == ' ')
             {
-                if(currentChar == char1)
-                {
-                    char1.setInvisible(true);
-                    char2.setInvisible(false);
-                    currentChar = char2;
-                    currentWorld = world2;
-                }
-                else
-                {
-                    char1.setInvisible(false);
-                    char2.setInvisible(true);
-                    currentChar = char1;
-                    currentWorld = world1;
-                }
+            	if(checkTeleport())
+            	{
+	                if(currentChar == char1)
+	                {
+	                    char1.setInvisible(true);
+	                    char2.setInvisible(false);
+	                    currentChar = char2;
+	                    currentWorld = world2;
+	                }
+	                else
+	                {
+	                    char1.setInvisible(false);
+	                    char2.setInvisible(true);
+	                    currentChar = char1;
+	                    currentWorld = world1;
+	                }
+            	}
             } 
         }
     }
