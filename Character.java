@@ -1,7 +1,10 @@
 
 import javax.swing.JOptionPane;
+
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.*;
+
 import javax.imageio.ImageIO;
 
 public class Character

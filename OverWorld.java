@@ -46,7 +46,9 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
         
         overWorldPanel.setLayout(new BoxLayout(overWorldPanel, BoxLayout.Y_AXIS));
         overWorldFrame.setTitle("Over World");
-        overWorldFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        //overWorldFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        overWorldFrame.setSize(1250,600);
+        //overWorldFrame.setResizable(false);
         overWorldFrame.setVisible(true);
         overWorldFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
