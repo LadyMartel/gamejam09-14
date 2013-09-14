@@ -12,7 +12,8 @@ public class Character
     boolean isInvisible = false;
     int xcoord = 400;
     int ycoord = 0;
-    int v = 10;
+    int vx = 10;
+    int vy = 10;
     BufferedImage charImage;
 
     public Character(String imageString)
@@ -30,24 +31,24 @@ public class Character
     
     public void moveRight()
     {
-        xcoord += v;
+        xcoord += vx;
     }
 
     public void moveLeft()
     {
-        if(xcoord - v >= 0)
-            xcoord -= v;
+        if(xcoord - vx >= 0)
+            xcoord -= vx;
     }
     
     public void moveUp()
     {
-        if(ycoord - v >= 0)
-            ycoord -= v;
+        if(ycoord - vy >= 0)
+            ycoord -= vy;
     }
     
     public void moveDown()
     {
-        ycoord += v;
+        ycoord += vy;
     }
     
     public BufferedImage getCharImage()
@@ -75,8 +76,25 @@ public class Character
         return isInvisible;
     }
     
-    public void setV(int nv)
+    public void setVX(int nv)
     {
-    	v = nv;
+    	vx = nv;
     }
+    
+    public void setVY(int nv)
+    {
+    	vy = nv;
+    }
+    
+    public int getVX()
+    {
+    	return vx;
+    }
+    
+    public int getVY()
+    {
+    	return vy;
+    }
+    
+    
 }

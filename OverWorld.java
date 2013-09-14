@@ -74,17 +74,6 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
         overWorldFrame.requestFocus();
     }
     
-    
-    /*
-    public void paintLight()
-    {
-        offset++;
-        world1.paintLight(lights1);
-        world2.paintLight(lights2);
-    }
-    */
-  
-    
     public void actionPerformed(ActionEvent e)
     {
         overPaintChars();
@@ -107,12 +96,62 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
         			isAlive = false;
         	}
         }
+        if (currentChar.xcoord - offset <= 0)
+        {
+        	isAlive = false;
+        }
         return isAlive;
     }
     
-    private boolean checkIsWall()
+    private boolean checkTeleport()
     {
+    	WorldPainter op = world1;
+    	if (currentWorld == world1)
+    	{
+    		op = world2;
+    	}
+    	for(int i = currentChar.xcoord; i < currentChar.xcoord + currentChar.getCharImage().getWidth(); i++)
+        {
+        	for(int j = currentChar.ycoord; j < currentChar.ycoord + currentChar.getCharImage().getHeight(); j++){
+        		if(op.imageWorld_mask.getRGB(i,j) == Color.WHITE.getRGB())
+        			return false;
+        	}
+        }
     	return true;
+    }
+    
+    
+    private boolean checkWall(char s)
+    {
+    	if (s == 'r'){
+    		int i = currentChar.xcoord + currentChar.getCharImage().getWidth();
+	        for(int j = currentChar.ycoord; j < currentChar.ycoord + currentChar.getCharImage().getHeight(); j++){
+	        	if(currentWorld.imageWorld_mask.getRGB(i,j) == Color.WHITE.getRGB())
+	        		return true;
+	        }
+    	}
+    	else if (s == 'l'){
+    		int i = currentChar.xcoord;
+	        for(int j = currentChar.ycoord; j < currentChar.ycoord + currentChar.getCharImage().getHeight(); j++){
+	        	if(currentWorld.imageWorld_mask.getRGB(i,j) == Color.WHITE.getRGB())
+	        		return true;
+	        }
+    	}
+    	else if (s == 'u'){
+    		int i = currentChar.ycoord;
+	        for(int j = currentChar.xcoord; j < currentChar.xcoord + currentChar.getCharImage().getWidth(); j++){
+	        	if(currentWorld.imageWorld_mask.getRGB(j,i) == Color.WHITE.getRGB())
+	        		return true;
+	        }
+    	}
+    	else {
+    		int i = currentChar.ycoord + currentChar.getCharImage().getHeight();
+	        for(int j = currentChar.xcoord; j < currentChar.xcoord + currentChar.getCharImage().getWidth(); j++){
+	        	if(currentWorld.imageWorld_mask.getRGB(j,i) == Color.WHITE.getRGB())
+	        		return true;
+	        }
+    	}
+    	return false;
     }
     
     
@@ -183,33 +222,11 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
             this.yChar = yChar;
         }
         
-        
-        /*
-        public void paintLight(ArrayList<Light> lights)
-        {
-            this.lights = lights;
-        }*/
-
         public void paintComponent(Graphics g)
         {
             super.paintComponent(g);
             g.drawImage(imageWorld,-offset, 0, this);
             if(shouldPaintChars) {g.drawImage(imageChar, xChar - offset, yChar, this);}
-            
-            /*
-            Graphics2D g2 = (Graphics2D) g;
-            for (Light light:lights)
-            {
-                int x = light.getX() - offset;
-                int y = light.getY();
-                int[] xp = {x,x-60,x+60};
-                int[] yp = {y,y+50,y+50};
-                Polygon p = new Polygon(xp,yp,3);
-                g2.draw(p);
-                g2.draw(new Rectangle2D.Double(x-60,y+50,120,250));
-            }*/
-            //g.translate(-offset, 0);
-            //g2.translate(-offset, 0);
         }
     }
     
@@ -220,7 +237,8 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
             char keyChar = e.getKeyChar();
             if(keyChar == 'd')
             {
-                if(char1.getXcoord() + 10 <= world1.getWidth() + offset - char1.getCharImage().getWidth())
+            	if(!checkWall('r'))
+                if(char1.getXcoord() + char1.getVX() <= world1.getWidth() + offset - char1.getCharImage().getWidth())
                 {
                     char1.moveRight();
                     char2.moveRight();
@@ -228,21 +246,27 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
             }
             else if(keyChar == 'a')
             {
-                char1.moveLeft();
-                char2.moveLeft();
+            	if(!checkWall('l')){
+	                char1.moveLeft();
+	                char2.moveLeft();
+            	}
             }
             else if(keyChar == 's')
             {
-                if(char1.getYcoord() + 10 <= world1.getHeight() - char1.getCharImage().getHeight())
-                {
-                    char1.moveDown();
-                    char2.moveDown();
-                }
+            	if(!checkWall('d')){
+	                if(char1.getYcoord() + char1.getVY() <= world1.getHeight() - char1.getCharImage().getHeight())
+	                {
+	                    char1.moveDown();
+	                    char2.moveDown();
+	                }
+            	}
             }
             else if(keyChar == 'w')
             {
-                char1.moveUp();
-                char2.moveUp();
+            	if(!checkWall('u')){
+	                char1.moveUp();
+	                char2.moveUp();
+            	}
             }
             else if(keyChar == ' ')
             {
