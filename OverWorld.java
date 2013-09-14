@@ -9,7 +9,7 @@ import java.io.*;
 import javax.imageio.ImageIO;
 
 
-public class OverWorld extends JApplet implements KeyListener, ActionListener, MouseListener
+public class OverWorld implements KeyListener, ActionListener, MouseListener
 {
     public WorldPainter world1, world2, currentWorld;
     public JFrame overWorldFrame;
@@ -19,16 +19,21 @@ public class OverWorld extends JApplet implements KeyListener, ActionListener, M
     private int levelCounter = 1;
     public static final int slow = 5;
     public static final int normal = 10;
-    public static final int fast = 20;
+    public static final int fast = 15;
     private boolean done = false;
     
     private Timer timer;
     private int offset = 0;
-
+    
+    public static void main(String[] args)
+    {
+    	OverWorld overworld = new OverWorld();
+    }
+    /*
     public void init()
     {
         OverWorld overworld = new OverWorld();
-    }
+    }*/
     
     public OverWorld()
     {
@@ -78,21 +83,29 @@ public class OverWorld extends JApplet implements KeyListener, ActionListener, M
     {
         overPaintChars();
         checkIsDead();
+        if(isSpeed())
+        {
+        	char1.moveRight();
+            char2.moveRight();
+        }
         if(checkLeaf())
         {
         	done = false;
             timer.stop();
             levelCounter++;
-            offset = 0;
-            overPaintWorlds("./resource/top" + levelCounter + ".png", "./resource/bottom" + levelCounter + ".png", "./resource/top" + levelCounter + "mask.png", "./resource/bottom" + levelCounter + "mask.png");
-            char1.setCoord(100, 0);
-            char2.setCoord(100, 0);
-            char1.setInvisible(false);
-            char2.setInvisible(true);
-            currentChar = char1;
-            currentWorld = world1;
             int someNum = JOptionPane.showConfirmDialog(null, "Congratulations, you beat the level! Now to the next one :", "Congratulations!", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
-            if(someNum > Integer.MIN_VALUE) {timer.start();}
+            if(someNum > Integer.MIN_VALUE) 
+            {
+            	overPaintWorlds("./resource/top" + levelCounter + ".png", "./resource/bottom" + levelCounter + ".png", "./resource/top" + levelCounter + "mask.png", "./resource/bottom" + levelCounter + "mask.png");
+                offset = 0;
+                char1.setCoord(100, 0);
+                char2.setCoord(100, 0);
+                char1.setInvisible(false);
+                char2.setInvisible(true);
+                currentChar = char1;
+                currentWorld = world1;
+            	timer.start();
+            }
         }
         if(!isAlive)
         {
@@ -192,28 +205,28 @@ public class OverWorld extends JApplet implements KeyListener, ActionListener, M
     {
     	if (s == 'r'){
     		int i = currentChar.xcoord + currentChar.getCharImage().getWidth();
-	        for(int j = currentChar.ycoord; j < currentChar.ycoord + currentChar.getCharImage().getHeight(); j++){
+	        for(int j = currentChar.ycoord+10; j < currentChar.ycoord + currentChar.getCharImage().getHeight()-10; j++){
 	        	if(currentWorld.imageWorld_mask.getRGB(i,j) == Color.WHITE.getRGB())
 	        		return true;
 	        }
     	}
     	else if (s == 'l'){
     		int i = currentChar.xcoord;
-	        for(int j = currentChar.ycoord; j < currentChar.ycoord + currentChar.getCharImage().getHeight(); j++){
+	        for(int j = currentChar.ycoord+10; j < currentChar.ycoord + currentChar.getCharImage().getHeight()-10; j++){
 	        	if(currentWorld.imageWorld_mask.getRGB(i,j) == Color.WHITE.getRGB())
 	        		return true;
 	        }
     	}
     	else if (s == 'u'){
     		int i = currentChar.ycoord;
-	        for(int j = currentChar.xcoord; j < currentChar.xcoord + currentChar.getCharImage().getWidth(); j++){
+	        for(int j = currentChar.xcoord+10; j < currentChar.xcoord + currentChar.getCharImage().getWidth()-10; j++){
 	        	if(currentWorld.imageWorld_mask.getRGB(j,i) == Color.WHITE.getRGB())
 	        		return true;
 	        }
     	}
     	else {
     		int i = currentChar.ycoord + currentChar.getCharImage().getHeight();
-	        for(int j = currentChar.xcoord; j < currentChar.xcoord + currentChar.getCharImage().getWidth(); j++){
+	        for(int j = currentChar.xcoord+10; j < currentChar.xcoord + currentChar.getCharImage().getWidth()-10; j++){
 	        	if(currentWorld.imageWorld_mask.getRGB(j,i) == Color.WHITE.getRGB())
 	        		return true;
 	        }
