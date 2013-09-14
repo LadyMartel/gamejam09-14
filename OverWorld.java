@@ -9,7 +9,7 @@ import java.io.*;
 import javax.imageio.ImageIO;
 
 
-public class OverWorld implements KeyListener, ActionListener, MouseListener
+public class OverWorld extends JApplet implements KeyListener, ActionListener, MouseListener
 {
     public WorldPainter world1, world2, currentWorld;
     public JFrame overWorldFrame;
@@ -25,7 +25,7 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
     private Timer timer;
     private int offset = 0;
 
-    public static void main(String[] args)
+    public void init()
     {
         OverWorld overworld = new OverWorld();
     }

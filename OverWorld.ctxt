@@ -1,6 +1,6 @@
 #BlueJ class context
-comment0.params=args
-comment0.target=void\ main(java.lang.String[])
+comment0.params=
+comment0.target=void\ init()
 comment1.params=
 comment1.target=OverWorld()
 comment10.params=top\ bottom\ top_mask\ bottom_mask
