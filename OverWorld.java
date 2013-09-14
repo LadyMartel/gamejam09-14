@@ -18,6 +18,7 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
     public Container overWorldPanel;
     private Character char1, char2, currentChar;
     private boolean isAlive = true;
+    private int levelCounter = 1;
     //private ArrayList<Light> lights1 = new ArrayList<Light>();
     //private ArrayList<Light> lights2 = new ArrayList<Light>();
     
@@ -78,7 +79,15 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
     {
         overPaintChars();
         checkIsDead();
-        //paintLight();
+        if(checkLeaf())
+        {
+            timer.stop();
+            levelCounter++;
+            offset = 0;
+            overPaintWorlds("./resource/top" + levelCounter + ".png", "./resource/bottom" + levelCounter + ".png", "./resource/top" + levelCounter + "mask.png", "./resource/bottom" + levelCounter + "mask.png");
+            int someNum = JOptionPane.showConfirmDialog(null, "Congratulations, you beat the level! Now to the next one :", "Congratulations!", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+            if(someNum > Integer.MIN_VALUE) {timer.start();}
+        }
         if(!isAlive)
         {
             world1.setBackground(Color.WHITE);
@@ -101,6 +110,19 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
         	isAlive = false;
         }
         return isAlive;
+    }
+    
+    
+    private boolean checkLeaf()
+    {
+    	for(int i = currentChar.xcoord; i < currentChar.xcoord + currentChar.getCharImage().getWidth(); i++)
+        {
+        	for(int j = currentChar.ycoord; j < currentChar.ycoord + currentChar.getCharImage().getHeight(); j++){
+        		if(currentWorld.imageWorld_mask.getRGB(i,j) == Color.GREEN.getRGB())
+        			return true;
+        	}
+        }
+    	return false;
     }
     
     private boolean checkTeleport()
@@ -189,7 +211,7 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
         }
         catch(IOException i)
         {
-            JOptionPane.showConfirmDialog(null, JOptionPane.ERROR_MESSAGE, "Image Not Found", 1);
+            JOptionPane.showConfirmDialog(null, "Image Not Found", "Image Not Found", JOptionPane.ERROR_MESSAGE);
             world1.imageWorld = null;
             world2.imageWorld = null;
         }
