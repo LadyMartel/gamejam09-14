@@ -10,7 +10,7 @@ import javax.imageio.ImageIO;
 public class Character
 {
     boolean isInvisible = false;
-    int xcoord = 200;
+    int xcoord = 400;
     int ycoord = 0;
     int vx = 10;
     int vy = 10;
@@ -94,6 +94,12 @@ public class Character
     public int getVY()
     {
     	return vy;
+    }
+    
+    public void setCoord(int x, int y)
+    {
+    	xcoord = x;
+    	ycoord = y;
     }
     
     

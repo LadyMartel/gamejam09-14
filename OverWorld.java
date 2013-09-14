@@ -88,12 +88,9 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
             levelCounter++;
             offset = 0;
             overPaintWorlds("./resource/top" + levelCounter + ".png", "./resource/bottom" + levelCounter + ".png", "./resource/top" + levelCounter + "mask.png", "./resource/bottom" + levelCounter + "mask.png");
-            char1.xcoord = 50;
-            char2.xcoord = 50;
-            char1.ycoord = 0;
-            char2.ycoord = 0;
-            offset = 0;
-            keyPressed(new KeyEvent(overWorldFrame, 0, 0, 0, 0, ' '));
+            char1.setCoord(200, 0);
+            char2.setCoord(200, 0);
+            keyPressed(new KeyEvent(overWorldFrame,0,0,0,0,' '));
             int someNum = JOptionPane.showConfirmDialog(null, "Congratulations, you beat the level! Now to the next one :", "Congratulations!", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
             if(someNum > Integer.MIN_VALUE) {timer.start();}
         }
@@ -292,17 +289,22 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
             char keyChar = e.getKeyChar();
             if(isSludge())
         	{
-        		currentChar.setVX(slow);
-        		currentChar.setVY(slow);
+        		char1.setVX(slow);
+        		char1.setVY(slow);
+        		char2.setVX(slow);
+        		char2.setVY(slow);
         	}
         	else if(isSpeed())
         	{
-        		currentChar.setVX(fast);
+        		char1.setVX(fast);
+        		char2.setVX(fast);
         	}
         	else
         	{
-        		currentChar.setVX(normal);
-        		currentChar.setVY(normal);
+        		char1.setVX(normal);
+        		char1.setVY(normal);
+        		char2.setVX(normal);
+        		char2.setVY(normal);
         	}
             if(keyChar == 'd')
             {
