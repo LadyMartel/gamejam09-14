@@ -103,10 +103,6 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
     
     private boolean checkIsDead(int xVelocity, int yVelocity)
     {
-        if(currentWorld.imageWorld_mask.getRGB(currentChar.xcoord + currentChar.getCharImage().getWidth(), currentChar.ycoord) == Color.YELLOW.getRGB()
-            || currentWorld.imageWorld_mask.getRGB(currentChar.xcoord + currentChar.getCharImage().getWidth() + xVelocity, currentChar.ycoord + yVelocity + currentChar.getCharImage().getHeight()) == Color.YELLOW.getRGB()
-            || currentWorld.imageWorld_mask.getRGB(currentChar.xcoord, currentChar.ycoord + yVelocity + currentChar.getCharImage().getHeight()) == Color.YELLOW.getRGB()
-            || currentWorld.imageWorld_mask.getRGB(currentChar.xcoord - currentChar.getCharImage().getWidth(), currentChar.ycoord) == Color.YELLOW.getRGB())
         for(int i = currentChar.xcoord; i < currentChar.xcoord + currentChar.getCharImage().getWidth(); i++)
         {
         	for(int j = currentChar.ycoord; j < currentChar.ycoord + currentChar.getCharImage().getHeight(); j++){
