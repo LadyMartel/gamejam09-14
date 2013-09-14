@@ -18,8 +18,8 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
     private Character char1;
     private Character char2;
     private Character currentChar;
-    private ArrayList<Light> lights1 = new ArrayList<Light>();
-    private ArrayList<Light> lights2 = new ArrayList<Light>();
+    //private ArrayList<Light> lights1 = new ArrayList<Light>();
+    //private ArrayList<Light> lights2 = new ArrayList<Light>();
     
     private Timer timer;
     private int currentX = 0;
@@ -33,8 +33,8 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
     {
         overWorldFrame = new JFrame();
         overWorldPanel = overWorldFrame.getContentPane();
-        char1 = new Character("/Users/JungHyun/Documents/workspace/game/src/charimage.png");
-        char2 = new Character("/Users/JungHyun/Documents/workspace/game/src/charimage.png");
+        char1 = new Character("./resource/charimage.png");
+        char2 = new Character("./resource/charimage.png");
         char1.setInvisible(false);
         char2.setInvisible(true);
         world1 = new WorldPainter();
@@ -61,23 +61,12 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
         world1.addKeyListener(this);
         world2.addKeyListener(this);
         
-        overPaintChars();
-        lights1.add(new Light(300,0));
-        paintLight();
+        //lights1.add(new Light(300,0));
         timer = new Timer(30, this);
         timer.start();
-        
-        overWorldFrame.requestFocus();
+       
         currentChar = char1;
-        while(currentChar.isAlive)
-        {
-        	if(currentChar.xcoord - currentX < 0)
-        	{
-        		currentChar.isAlive = false;
-        	}
-        }
-        world1.setBackground(Color.BLACK);
-        world2.setBackground(Color.BLACK);
+        overWorldFrame.requestFocus();
     }
     
     public void overPaintChars()
@@ -103,12 +92,14 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
         }
     }
     
+    /*
     public void paintLight()
     {
     	currentX++;
     	world1.paintLight(lights1);
     	world2.paintLight(lights2);
     }
+    */
     
     public void keyTyped(KeyEvent e)
     {
@@ -164,6 +155,16 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
     public void actionPerformed(ActionEvent e)
     {
         overPaintChars();
+        //paintLight();
+        if(currentChar.xcoord - currentX < -char1.getCharImage().getWidth())
+        {
+        	currentChar.isAlive = false;
+        }
+        if(!currentChar.isAlive)
+        {
+        	world1.setBackground(Color.BLACK);
+            world2.setBackground(Color.BLACK);
+        }
     }
     
     public void mouseClicked(MouseEvent e)
@@ -180,7 +181,7 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
         private BufferedImage imageChar;
         private int xChar, yChar;
         private boolean shouldPaintChars = false;
-        private ArrayList<Light> lights = new ArrayList<Light>();
+        //private ArrayList<Light> lights = new ArrayList<Light>();
         
         public WorldPainter ()
         {
@@ -199,15 +200,17 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
             this.yChar = yChar;
         }
         
+        /*
         public void paintLight(ArrayList<Light> lights)
         {
             this.lights = lights;
-        }
+        }*/
 
         public void paintComponent(Graphics g)
         {
             super.paintComponent(g);
             if(shouldPaintChars) {g.drawImage(imageChar, xChar - currentX, yChar, this);}
+            /*
             Graphics2D g2 = (Graphics2D) g;
             for (Light light:lights)
             {
@@ -218,8 +221,8 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
             	Polygon p = new Polygon(xp,yp,3);
             	g2.draw(p);
             	g2.draw(new Rectangle2D.Double(x-60,y+50,120,250));
-            }
-            //g.translate(-currentX, 0);
+            }*/
+            g.translate(-currentX, 0);
             //g2.translate(-currentX, 0);
         }
     }
