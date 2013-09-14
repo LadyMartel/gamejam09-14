@@ -11,7 +11,7 @@ import java.io.*;
 import javax.imageio.ImageIO;
 
 
-public class OverWorld implements KeyListener, ActionListener, MouseListener
+public class OverWorld extends JApplet implements KeyListener, ActionListener, MouseListener
 {
     public WorldPainter world1, world2, currentWorld;
     public JFrame overWorldFrame;
@@ -27,7 +27,7 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
     private Timer timer;
     private int offset = 0;
 
-    public static void main(String[] args)
+    public void init()
     {
         OverWorld overworld = new OverWorld();
     }
@@ -42,7 +42,7 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
         char2.setInvisible(true);
         world1 = new WorldPainter();
         world2 = new WorldPainter();
-        world1.setBackground(Color.BLACK);
+        world1.setBackground(Color.WHITE);
         world2.setBackground(Color.BLACK);
         
         overPaintWorlds("./resource/top1.png", "./resource/bottom1.png", "./resource/top1mask.png", "./resource/bottom1mask.png");
