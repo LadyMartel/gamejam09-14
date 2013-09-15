@@ -28,7 +28,7 @@ public class OverWorld extends JApplet implements KeyListener, ActionListener, M
     
     public static void main(String[] args)
     {
-    	OverWorld overworld = new OverWorld();
+        OverWorld overworld = new OverWorld();
     }
     
     public void init()
@@ -72,12 +72,20 @@ public class OverWorld extends JApplet implements KeyListener, ActionListener, M
         world1.addKeyListener(this);
         world2.addKeyListener(this);
         
-        timer = new Timer(30, this);
-        timer.start();
+        
+        int someNum = JOptionPane.showConfirmDialog(null, "Directions: Move with the arrow keys or awsd. Try to remain hidden from birds by staying out\n" + 
+                                                          "of the lights...but don't take too long or you'll starve! Use space to teleport to the inverse\n" +
+                                                          "reality if you get stuck on one side. Watch out for sludge and wind in more complex levels that\n" +  
+                                                          "will move you slowly and quickly respectively. Find the leaf for some delicious nutrition!", "Directions", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+        if(someNum > Integer.MIN_VALUE) 
+        {    
+            timer = new Timer(30, this);
+            timer.start();
        
-        currentWorld = world1;
-        currentChar = char1;
-        overWorldFrame.requestFocus();
+            currentWorld = world1;
+            currentChar = char1;
+            overWorldFrame.requestFocus();
+        }
     }
     
     public void actionPerformed(ActionEvent e)
@@ -86,18 +94,30 @@ public class OverWorld extends JApplet implements KeyListener, ActionListener, M
         checkIsDead();
         if(isSpeed())
         {
-        	char1.moveRight();
-            char2.moveRight();
+            if(char1.getXcoord() + char1.getVX() <= world1.getWidth() + offset - char1.getCharImage().getWidth())
+            {
+                char1.moveRight();
+                char2.moveRight();     
+            }
         }
         if(checkLeaf())
         {
-        	done = false;
+            int someNum;
+            done = false;
             timer.stop();
             levelCounter++;
-            int someNum = JOptionPane.showConfirmDialog(null, "Congratulations, you beat the level! Now to the next one :", "Congratulations!", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+            if(levelCounter == 5)
+            {
+                JOptionPane.showConfirmDialog(null, "Congratulations, you survived! Now that you're full, come back to play another day!", "Congratulations!", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                someNum = Integer.MIN_VALUE;
+            }
+            else
+            {
+                someNum = JOptionPane.showConfirmDialog(null, "Congratulations, you beat the level! Now to the next one!", "Congratulations!", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+            }
             if(someNum > Integer.MIN_VALUE) 
             {
-            	overPaintWorlds("top" + levelCounter + ".png", "bottom" + levelCounter + ".png", "top" + levelCounter + "mask.png", "bottom" + levelCounter + "mask.png");
+                overPaintWorlds("top" + levelCounter + ".png", "bottom" + levelCounter + ".png", "top" + levelCounter + "mask.png", "bottom" + levelCounter + "mask.png");
                 offset = 0;
                 char1.setCoord(100, 0);
                 char2.setCoord(100, 0);
@@ -105,7 +125,7 @@ public class OverWorld extends JApplet implements KeyListener, ActionListener, M
                 char2.setInvisible(true);
                 currentChar = char1;
                 currentWorld = world1;
-            	timer.start();
+                timer.start();
             }
         }
         if(!isAlive)
@@ -116,8 +136,8 @@ public class OverWorld extends JApplet implements KeyListener, ActionListener, M
             int n = JOptionPane.showConfirmDialog(overWorldFrame, "You Died! Do you want to start over?", "Dead Bug", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
             if (n == JOptionPane.YES_OPTION)
             {
-            	isAlive = true;
-            	offset = 0;
+                isAlive = true;
+                offset = 0;
                 overPaintWorlds("top" + levelCounter + ".png", "bottom" + levelCounter + ".png", "top" + levelCounter + "mask.png", "bottom" + levelCounter + "mask.png");
                 char1.setCoord(100, 0);
                 char2.setCoord(100, 0);
@@ -134,105 +154,105 @@ public class OverWorld extends JApplet implements KeyListener, ActionListener, M
     {
         for(int i = currentChar.xcoord; i < currentChar.xcoord + currentChar.getCharImage().getWidth(); i++)
         {
-        	for(int j = currentChar.ycoord; j < currentChar.ycoord + currentChar.getCharImage().getHeight(); j++){
-        		if(currentWorld.imageWorld_mask.getRGB(i,j) == Color.YELLOW.getRGB())
-        			isAlive = false;
-        	}
+            for(int j = currentChar.ycoord; j < currentChar.ycoord + currentChar.getCharImage().getHeight(); j++){
+                if(currentWorld.imageWorld_mask.getRGB(i,j) == Color.YELLOW.getRGB())
+                    isAlive = false;
+            }
         }
         if (currentChar.xcoord - offset <= 0)
         {
-        	isAlive = false;
+            isAlive = false;
         }
         return isAlive;
     }
     
     private boolean isSludge()
     {
-    	for(int i = currentChar.xcoord; i < currentChar.xcoord + currentChar.getCharImage().getWidth(); i++)
+        for(int i = currentChar.xcoord; i < currentChar.xcoord + currentChar.getCharImage().getWidth(); i++)
         {
-        	for(int j = currentChar.ycoord; j < currentChar.ycoord + currentChar.getCharImage().getHeight(); j++){
-        		if(currentWorld.imageWorld_mask.getRGB(i,j) == Color.RED.getRGB())
-        			return true;
-        	}
+            for(int j = currentChar.ycoord; j < currentChar.ycoord + currentChar.getCharImage().getHeight(); j++){
+                if(currentWorld.imageWorld_mask.getRGB(i,j) == Color.RED.getRGB())
+                    return true;
+            }
         }
-    	return false;
+        return false;
     }
     
     private boolean isSpeed()
     {
-    	for(int i = currentChar.xcoord; i < currentChar.xcoord + currentChar.getCharImage().getWidth(); i++)
+        for(int i = currentChar.xcoord; i < currentChar.xcoord + currentChar.getCharImage().getWidth(); i++)
         {
-        	for(int j = currentChar.ycoord; j < currentChar.ycoord + currentChar.getCharImage().getHeight(); j++){
-        		if(currentWorld.imageWorld_mask.getRGB(i,j) == Color.BLUE.getRGB())
-        			return true;
-        	}
+            for(int j = currentChar.ycoord; j < currentChar.ycoord + currentChar.getCharImage().getHeight(); j++){
+                if(currentWorld.imageWorld_mask.getRGB(i,j) == Color.BLUE.getRGB())
+                    return true;
+            }
         }
-    	return false;
+        return false;
     }
     
     
     
     private boolean checkLeaf()
     {
-    	for(int i = currentChar.xcoord; i < currentChar.xcoord + currentChar.getCharImage().getWidth(); i++)
+        for(int i = currentChar.xcoord; i < currentChar.xcoord + currentChar.getCharImage().getWidth(); i++)
         {
-        	for(int j = currentChar.ycoord; j < currentChar.ycoord + currentChar.getCharImage().getHeight(); j++){
-        		if(currentWorld.imageWorld_mask.getRGB(i,j) == Color.GREEN.getRGB())
-        			done = true;
-        	}
+            for(int j = currentChar.ycoord; j < currentChar.ycoord + currentChar.getCharImage().getHeight(); j++){
+                if(currentWorld.imageWorld_mask.getRGB(i,j) == Color.GREEN.getRGB())
+                    done = true;
+            }
         }
-    	return done;
+        return done;
     }
     
     private boolean checkTeleport()
     {
-    	WorldPainter op = world1;
-    	if (currentWorld == world1)
-    	{
-    		op = world2;
-    	}
-    	for(int i = currentChar.xcoord; i < currentChar.xcoord + currentChar.getCharImage().getWidth(); i++)
+        WorldPainter op = world1;
+        if (currentWorld == world1)
         {
-        	for(int j = currentChar.ycoord; j < currentChar.ycoord + currentChar.getCharImage().getHeight(); j++){
-        		if(op.imageWorld_mask.getRGB(i,j) == Color.WHITE.getRGB())
-        			return false;
-        	}
+            op = world2;
         }
-    	return true;
+        for(int i = currentChar.xcoord; i < currentChar.xcoord + currentChar.getCharImage().getWidth(); i++)
+        {
+            for(int j = currentChar.ycoord; j < currentChar.ycoord + currentChar.getCharImage().getHeight(); j++){
+                if(op.imageWorld_mask.getRGB(i,j) == Color.WHITE.getRGB())
+                    return false;
+            }
+        }
+        return true;
     }
     
     
     private boolean checkWall(char s)
     {
-    	if (s == 'r'){
-    		int i = currentChar.xcoord + currentChar.getCharImage().getWidth();
-	        for(int j = currentChar.ycoord+10; j < currentChar.ycoord + currentChar.getCharImage().getHeight()-10; j++){
-	        	if(currentWorld.imageWorld_mask.getRGB(i,j) == Color.WHITE.getRGB())
-	        		return true;
-	        }
-    	}
-    	else if (s == 'l'){
-    		int i = currentChar.xcoord;
-	        for(int j = currentChar.ycoord+10; j < currentChar.ycoord + currentChar.getCharImage().getHeight()-10; j++){
-	        	if(currentWorld.imageWorld_mask.getRGB(i,j) == Color.WHITE.getRGB())
-	        		return true;
-	        }
-    	}
-    	else if (s == 'u'){
-    		int i = currentChar.ycoord;
-	        for(int j = currentChar.xcoord+10; j < currentChar.xcoord + currentChar.getCharImage().getWidth()-10; j++){
-	        	if(currentWorld.imageWorld_mask.getRGB(j,i) == Color.WHITE.getRGB())
-	        		return true;
-	        }
-    	}
-    	else {
-    		int i = currentChar.ycoord + currentChar.getCharImage().getHeight();
-	        for(int j = currentChar.xcoord+10; j < currentChar.xcoord + currentChar.getCharImage().getWidth()-10; j++){
-	        	if(currentWorld.imageWorld_mask.getRGB(j,i) == Color.WHITE.getRGB())
-	        		return true;
-	        }
-    	}
-    	return false;
+        if (s == 'r'){
+            int i = currentChar.xcoord + currentChar.getCharImage().getWidth();
+            for(int j = currentChar.ycoord+10; j < currentChar.ycoord + currentChar.getCharImage().getHeight()-10; j++){
+                if(currentWorld.imageWorld_mask.getRGB(i,j) == Color.WHITE.getRGB())
+                    return true;
+            }
+        }
+        else if (s == 'l'){
+            int i = currentChar.xcoord;
+            for(int j = currentChar.ycoord+10; j < currentChar.ycoord + currentChar.getCharImage().getHeight()-10; j++){
+                if(currentWorld.imageWorld_mask.getRGB(i,j) == Color.WHITE.getRGB())
+                    return true;
+            }
+        }
+        else if (s == 'u'){
+            int i = currentChar.ycoord;
+            for(int j = currentChar.xcoord+10; j < currentChar.xcoord + currentChar.getCharImage().getWidth()-10; j++){
+                if(currentWorld.imageWorld_mask.getRGB(j,i) == Color.WHITE.getRGB())
+                    return true;
+            }
+        }
+        else {
+            int i = currentChar.ycoord + currentChar.getCharImage().getHeight();
+            for(int j = currentChar.xcoord+10; j < currentChar.xcoord + currentChar.getCharImage().getWidth()-10; j++){
+                if(currentWorld.imageWorld_mask.getRGB(j,i) == Color.WHITE.getRGB())
+                    return true;
+            }
+        }
+        return false;
     }
     
     
@@ -241,7 +261,7 @@ public class OverWorld extends JApplet implements KeyListener, ActionListener, M
         overWorldFrame.requestFocus();
         if(currentChar == char1)
         {
-        	offset++;
+            offset++;
             world1.paintChar(char1.getCharImage(), char1.getXcoord(), char1.getYcoord());
             world1.setShouldPaintChars(true);
             world2.setShouldPaintChars(false);
@@ -250,7 +270,7 @@ public class OverWorld extends JApplet implements KeyListener, ActionListener, M
         }
         else 
         {
-        	offset++;
+            offset++;
             world2.paintChar(char2.getCharImage(), char2.getXcoord(), char2.getYcoord());
             world2.setShouldPaintChars(true);
             world1.setShouldPaintChars(false);
@@ -317,27 +337,27 @@ public class OverWorld extends JApplet implements KeyListener, ActionListener, M
             char keyChar = e.getKeyChar();
             int keyCode = e.getKeyCode();
             if(isSludge())
-        	{
-        		char1.setVX(slow);
-        		char1.setVY(slow);
-        		char2.setVX(slow);
-        		char2.setVY(slow);
-        	}
-        	else if(isSpeed())
-        	{
-        		char1.setVX(fast);
-        		char2.setVX(fast);
-        	}
-        	else
-        	{
-        		char1.setVX(normal);
-        		char1.setVY(normal);
-        		char2.setVX(normal);
-        		char2.setVY(normal);
-        	}
+            {
+                char1.setVX(slow);
+                char1.setVY(slow);
+                char2.setVX(slow);
+                char2.setVY(slow);
+            }
+            else if(isSpeed())
+            {
+                char1.setVX(fast);
+                char2.setVX(fast);
+            }
+            else
+            {
+                char1.setVX(normal);
+                char1.setVY(normal);
+                char2.setVX(normal);
+                char2.setVY(normal);
+            }
             if(keyChar == 'd' || keyCode == KeyEvent.VK_RIGHT)
             {
-            	if(!checkWall('r'))
+                if(!checkWall('r'))
                 if(char1.getXcoord() + char1.getVX() <= world1.getWidth() + offset - char1.getCharImage().getWidth())
                 {
                     char1.moveRight();
@@ -346,47 +366,47 @@ public class OverWorld extends JApplet implements KeyListener, ActionListener, M
             }
             else if(keyChar == 'a' || keyCode == KeyEvent.VK_LEFT)
             {
-            	if(!checkWall('l')){
-	                char1.moveLeft();
-	                char2.moveLeft();
-            	}
+                if(!checkWall('l')){
+                    char1.moveLeft();
+                    char2.moveLeft();
+                }
             }
             else if(keyChar == 's' || keyCode == KeyEvent.VK_DOWN)
             {
-            	if(!checkWall('d')){
-	                if(char1.getYcoord() + char1.getVY() <= world1.getHeight() - char1.getCharImage().getHeight())
-	                {
-	                    char1.moveDown();
-	                    char2.moveDown();
-	                }
-            	}
+                if(!checkWall('d')){
+                    if(char1.getYcoord() + char1.getVY() <= world1.getHeight() - char1.getCharImage().getHeight())
+                    {
+                        char1.moveDown();
+                        char2.moveDown();
+                    }
+                }
             }
             else if(keyChar == 'w'|| keyCode == KeyEvent.VK_UP)
             {
-            	if(!checkWall('u')){
-	                char1.moveUp();
-	                char2.moveUp();
-            	}
+                if(!checkWall('u')){
+                    char1.moveUp();
+                    char2.moveUp();
+                }
             }
             else if(keyChar == ' ')
             {
-            	if(checkTeleport())
-            	{
-	                if(currentChar == char1)
-	                {
-	                    char1.setInvisible(true);
-	                    char2.setInvisible(false);
-	                    currentChar = char2;
-	                    currentWorld = world2;
-	                }
-	                else
-	                {
-	                    char1.setInvisible(false);
-	                    char2.setInvisible(true);
-	                    currentChar = char1;
-	                    currentWorld = world1;
-	                }
-            	}
+                if(checkTeleport())
+                {
+                    if(currentChar == char1)
+                    {
+                        char1.setInvisible(true);
+                        char2.setInvisible(false);
+                        currentChar = char2;
+                        currentWorld = world2;
+                    }
+                    else
+                    {
+                        char1.setInvisible(false);
+                        char2.setInvisible(true);
+                        currentChar = char1;
+                        currentWorld = world1;
+                    }
+                }
             } 
         }
     }
