@@ -9,7 +9,7 @@ import java.io.*;
 import javax.imageio.ImageIO;
 
 
-public class OverWorld implements KeyListener, ActionListener, MouseListener
+public class OverWorld extends JApplet implements KeyListener, ActionListener, MouseListener
 {
     public WorldPainter world1, world2, currentWorld;
     public JFrame overWorldFrame;
@@ -25,12 +25,12 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
     private Timer timer;
     private int offset = 0;
     
-    /*
+    
     public static void main(String[] args)
     {
     	OverWorld overworld = new OverWorld();
     }
-    */
+    
     public void init()
     {
         //OverWorld overworld = new OverWorld();
@@ -57,7 +57,7 @@ public class OverWorld implements KeyListener, ActionListener, MouseListener
         overWorldFrame.setSize(1250,600);
         //overWorldFrame.setResizable(false);
         overWorldFrame.setVisible(true);
-        overWorldFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //overWorldFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         overWorldPanel.add(world1);
         overWorldPanel.add(world2);
