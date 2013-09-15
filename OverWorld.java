@@ -40,8 +40,8 @@ public class OverWorld extends JApplet implements KeyListener, ActionListener, M
     {
         overWorldFrame = new JFrame();
         overWorldPanel = overWorldFrame.getContentPane();
-        char1 = new Character("./resource/charimage.png");
-        char2 = new Character("./resource/charimage_inverted.png");
+        char1 = new Character("charimage.png");
+        char2 = new Character("charimage_inverted.png");
         char1.setInvisible(false);
         char2.setInvisible(true);
         world1 = new WorldPainter();
@@ -49,7 +49,7 @@ public class OverWorld extends JApplet implements KeyListener, ActionListener, M
         world1.setBackground(Color.WHITE);
         world2.setBackground(Color.BLACK);
         
-        overPaintWorlds("./resource/top1.png", "./resource/bottom1.png", "./resource/top1mask.png", "./resource/bottom1mask.png");
+        overPaintWorlds("top1.png", "bottom1.png", "top1mask.png", "bottom1mask.png");
         
         overWorldPanel.setLayout(new BoxLayout(overWorldPanel, BoxLayout.Y_AXIS));
         overWorldFrame.setTitle("Over World");
@@ -97,7 +97,7 @@ public class OverWorld extends JApplet implements KeyListener, ActionListener, M
             int someNum = JOptionPane.showConfirmDialog(null, "Congratulations, you beat the level! Now to the next one :", "Congratulations!", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
             if(someNum > Integer.MIN_VALUE) 
             {
-            	overPaintWorlds("./resource/top" + levelCounter + ".png", "./resource/bottom" + levelCounter + ".png", "./resource/top" + levelCounter + "mask.png", "./resource/bottom" + levelCounter + "mask.png");
+            	overPaintWorlds("top" + levelCounter + ".png", "bottom" + levelCounter + ".png", "top" + levelCounter + "mask.png", "bottom" + levelCounter + "mask.png");
                 offset = 0;
                 char1.setCoord(100, 0);
                 char2.setCoord(100, 0);
@@ -118,7 +118,7 @@ public class OverWorld extends JApplet implements KeyListener, ActionListener, M
             {
             	isAlive = true;
             	offset = 0;
-                overPaintWorlds("./resource/top" + levelCounter + ".png", "./resource/bottom" + levelCounter + ".png", "./resource/top" + levelCounter + "mask.png", "./resource/bottom" + levelCounter + "mask.png");
+                overPaintWorlds("top" + levelCounter + ".png", "bottom" + levelCounter + ".png", "top" + levelCounter + "mask.png", "bottom" + levelCounter + "mask.png");
                 char1.setCoord(100, 0);
                 char2.setCoord(100, 0);
                 char1.setInvisible(false);
@@ -263,10 +263,10 @@ public class OverWorld extends JApplet implements KeyListener, ActionListener, M
     {
         try
         {
-            world1.imageWorld = ImageIO.read(new File(top));
-            world2.imageWorld = ImageIO.read(new File(bottom));
-            world1.imageWorld_mask = ImageIO.read(new File(top_mask));
-            world2.imageWorld_mask = ImageIO.read(new File(bottom_mask));
+            world1.imageWorld = ImageIO.read(this.getClass().getResourceAsStream(top));
+            world2.imageWorld = ImageIO.read(this.getClass().getResourceAsStream(bottom));
+            world1.imageWorld_mask = ImageIO.read(this.getClass().getResourceAsStream(top_mask));
+            world2.imageWorld_mask = ImageIO.read(this.getClass().getResourceAsStream(bottom_mask));
         }
         catch(IOException i)
         {

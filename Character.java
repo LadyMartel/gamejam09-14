@@ -20,7 +20,7 @@ public class Character
     {
         try
         {
-            charImage = ImageIO.read(new File(imageString));
+            charImage = ImageIO.read(this.getClass().getResourceAsStream(imageString));
         }
         catch(IOException i)
         {
